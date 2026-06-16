@@ -1,0 +1,101 @@
+@import './variables.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-ui);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: var(--color-blue);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+textarea {
+  font-family: var(--font-mono);
+  font-weight: var(--font-mono-weight);
+}
+
+input, select {
+  font-family: inherit;
+}
+
+pre, code {
+  font-family: var(--font-mono);
+  font-weight: var(--font-mono-weight);
+}
+
+::selection {
+  background: rgba(107, 143, 207, 0.3);
+  color: inherit;
+}
+
+img, svg {
+  display: block;
+}
+
+/* Grid background mixin */
+.grid-bg {
+  background-image:
+    linear-gradient(var(--color-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Corner frame panel - basic structure (corners rendered in Panel component) */
+.panel {
+  position: relative;
+}
+
+/* Monaco-like scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* Utility: JSON text should always be monospace */
+.json-mono {
+  font-family: var(--font-mono);
+}

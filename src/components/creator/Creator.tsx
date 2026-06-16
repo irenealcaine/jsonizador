@@ -1,0 +1,95 @@
+import { useState, useMemo, useCallback } from 'react';
+import Panel from '../ui/Panel';
+import Button from '../ui/Button';
+import FieldList from './FieldList';
+import Preview from './Preview';
+import { buildJsonFromFields, createEmptyField } from '../../tools/creator';
+import type { FieldNode } from '../../types';
+
+export default function Creator() {
+  const [fields, setFields] = useState<FieldNode[]>([]);
+  const [copied, setCopied] = useState(false);
+
+  const json = useMemo(() => {
+    const obj = buildJsonFromFields(fields);
+    return JSON.stringify(obj, null, 2);
+  }, [fields]);
+
+  const handleCopy = useCallback(() => {
+    navigator.clipboard.writeText(json).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }, [json]);
+
+  const handleDownload = useCallback(() => {
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'datos.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [json]);
+
+  const handleClear = useCallback(() => {
+    setFields([]);
+  }, []);
+
+  const handleAddRoot = useCallback(() => {
+    setFields((prev) => [...prev, createEmptyField('string')]);
+  }, []);
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-lg)' }}>
+      <Panel
+        title="Editor de campos"
+        actions={
+          <Button variant="primary" size="sm" onClick={handleAddRoot}>
+            + Campo raíz
+          </Button>
+        }
+        grid
+      >
+        <FieldList
+          fields={fields}
+          onChange={setFields}
+          parentType="object"
+        />
+
+        {fields.length === 0 && (
+          <p style={{
+            fontFamily: 'var(--font-ui)',
+            fontSize: '0.875rem',
+            color: 'var(--color-text-muted)',
+            fontStyle: 'italic',
+            marginTop: 8,
+          }}>
+            Añade un campo raíz para empezar a construir tu JSON.
+          </p>
+        )}
+      </Panel>
+
+      <Panel
+        title="Vista previa"
+        actions={
+          <div style={{ display: 'flex', gap: 'var(--spacing-xs)' }}>
+            <Button variant="secondary" size="sm" onClick={handleCopy}>
+              {copied ? '✓ Copiado' : 'Copiar'}
+            </Button>
+            <Button variant="primary" size="sm" onClick={handleDownload}>
+              Descargar .json
+            </Button>
+            {fields.length > 0 && (
+              <Button variant="danger" size="sm" onClick={handleClear}>
+                Limpiar
+              </Button>
+            )}
+          </div>
+        }
+      >
+        <Preview json={json} />
+      </Panel>
+    </div>
+  );
+}
