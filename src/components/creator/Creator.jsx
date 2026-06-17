@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import Panel from '../ui/Panel';
 import Button from '../ui/Button';
 import FieldList from './FieldList';
@@ -7,10 +7,25 @@ import SchemaView from './SchemaView';
 import { buildJsonFromFields } from '../../tools/creator';
 import { generateSchemaFromFields } from '../../tools/schema';
 
+const STORAGE_KEY = 'opencode-jsonizador-imported-fields';
+
 export default function Creator() {
   const [fields, setFields] = useState([]);
   const [copied, setCopied] = useState(false);
   const [showSchema, setShowSchema] = useState(false);
+
+  useEffect(() => {
+    const stored = sessionStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setFields(parsed);
+        }
+      } catch {}
+      sessionStorage.removeItem(STORAGE_KEY);
+    }
+  }, []);
 
   const json = useMemo(() => {
     const obj = buildJsonFromFields(fields);

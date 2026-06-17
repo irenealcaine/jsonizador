@@ -22,6 +22,13 @@ const tools = [
     to: '/creator',
     color: 'var(--color-amber)',
   },
+  {
+    title: 'Plantillero',
+    description: 'Genera una plantilla vacía con la misma estructura que tu JSON. Incluye campos opcionales detectados en arrays de objetos.',
+    icon: '\u25A1',
+    to: '/templater',
+    color: 'var(--color-green)',
+  },
 ];
 
 export default function Home() {

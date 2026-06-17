@@ -4,6 +4,7 @@ import Home from './components/home/Home';
 import Validator from './components/validator/Validator';
 import Viewer from './components/viewer/Viewer';
 import Creator from './components/creator/Creator';
+import Templater from './components/templater/Templater';
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
           <Route path="/validator" element={<Validator />} />
           <Route path="/viewer" element={<Viewer />} />
           <Route path="/creator" element={<Creator />} />
+          <Route path="/templater" element={<Templater />} />
         </Route>
       </Routes>
     </HashRouter>
