@@ -3,15 +3,22 @@ import Panel from '../ui/Panel';
 import Button from '../ui/Button';
 import FieldList from './FieldList';
 import Preview from './Preview';
+import SchemaView from './SchemaView';
 import { buildJsonFromFields, createEmptyField } from '../../tools/creator';
+import { generateSchemaFromFields } from '../../tools/schema';
 
 export default function Creator() {
   const [fields, setFields] = useState([]);
   const [copied, setCopied] = useState(false);
+  const [showSchema, setShowSchema] = useState(false);
 
   const json = useMemo(() => {
     const obj = buildJsonFromFields(fields);
     return JSON.stringify(obj, null, 2);
+  }, [fields]);
+
+  const schema = useMemo(() => {
+    return generateSchemaFromFields(fields);
   }, [fields]);
 
   const handleCopy = useCallback(() => {
@@ -37,6 +44,10 @@ export default function Creator() {
 
   const handleAddRoot = useCallback(() => {
     setFields((prev) => [...prev, createEmptyField('string')]);
+  }, []);
+
+  const toggleSchema = useCallback(() => {
+    setShowSchema((v) => !v);
   }, []);
 
   return (
@@ -70,24 +81,46 @@ export default function Creator() {
       </Panel>
 
       <Panel
-        title="Vista previa"
+        title={showSchema ? 'Schema JSON' : 'Vista previa'}
         actions={
           <div style={{ display: 'flex', gap: 'var(--spacing-xs)' }}>
-            <Button variant="secondary" size="sm" onClick={handleCopy}>
-              {copied ? '✓ Copiado' : 'Copiar'}
-            </Button>
-            <Button variant="primary" size="sm" onClick={handleDownload}>
-              Descargar .json
-            </Button>
-            {fields.length > 0 && (
-              <Button variant="danger" size="sm" onClick={handleClear}>
-                Limpiar
+            {showSchema ? (
+              <Button variant="secondary" size="sm" onClick={toggleSchema}>
+                ← Vista previa
               </Button>
+            ) : (
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={toggleSchema}
+                disabled={fields.length === 0}
+              >
+                Schema
+              </Button>
+            )}
+            {!showSchema && (
+              <>
+                <Button variant="secondary" size="sm" onClick={handleCopy}>
+                  {copied ? '✓ Copiado' : 'Copiar'}
+                </Button>
+                <Button variant="primary" size="sm" onClick={handleDownload}>
+                  Descargar .json
+                </Button>
+                {fields.length > 0 && (
+                  <Button variant="danger" size="sm" onClick={handleClear}>
+                    Limpiar
+                  </Button>
+                )}
+              </>
             )}
           </div>
         }
       >
-        <Preview json={json} />
+        {showSchema ? (
+          <SchemaView data={schema} />
+        ) : (
+          <Preview json={json} />
+        )}
       </Panel>
     </div>
   );

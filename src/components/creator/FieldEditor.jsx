@@ -78,6 +78,29 @@ export default function FieldEditor({ field, onChange, onDelete, onDuplicate, is
           <span style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>:</span>
         )}
 
+        {!isArrayItem && (
+          <span
+            onClick={() => onChange({ ...field, required: !field.required })}
+            title={field.required ? 'Obligatorio' : 'Opcional'}
+            style={{
+              fontSize: '0.65rem',
+              fontFamily: 'var(--font-mono)',
+              fontWeight: 600,
+              color: field.required ? 'var(--color-blue)' : 'var(--color-text-muted)',
+              cursor: 'pointer',
+              userSelect: 'none',
+              lineHeight: 1.4,
+              padding: '1px 4px',
+              border: field.required
+                ? '1px solid var(--color-blue)'
+                : '1px solid var(--color-border)',
+              background: field.required ? 'rgba(107, 143, 207, 0.1)' : 'transparent',
+            }}
+          >
+            {field.required ? 'req' : 'opt'}
+          </span>
+        )}
+
         <select
           value={field.type}
           onChange={(e) => handleTypeChange(e.target.value)}

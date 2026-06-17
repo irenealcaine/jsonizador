@@ -10,6 +10,7 @@ export default function Viewer() {
   const [jsonInput, setJsonInput] = useState('');
   const [viewMode, setViewMode] = useState('tree');
   const [copied, setCopied] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const parsed = useMemo(() => {
     try {
@@ -75,7 +76,27 @@ export default function Viewer() {
           >
             <div style={{ maxHeight: 500, overflow: 'auto' }}>
               {viewMode === 'tree' ? (
-                <TreeViewNode node={tree} depth={0} isLast />
+                <div>
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Buscar en el árbol…"
+                    style={{
+                      width: '100%',
+                      padding: '6px 10px',
+                      marginBottom: 'var(--spacing-sm)',
+                      fontSize: '0.75rem',
+                      fontFamily: 'var(--font-mono)',
+                      color: 'var(--color-text)',
+                      background: 'var(--color-bg)',
+                      border: '1px solid var(--color-border)',
+                      outline: 'none',
+                      boxSizing: 'border-box',
+                    }}
+                  />
+                  <TreeViewNode node={tree} depth={0} isLast searchQuery={searchQuery} />
+                </div>
               ) : (
                 <SyntaxHighlight json={prettyJson} />
               )}

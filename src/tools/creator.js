@@ -4,13 +4,14 @@ export function generateId() {
   return `field-${counter}-${crypto.randomUUID().slice(0, 8)}`;
 }
 
-export function createEmptyField(type = 'string') {
+export function createEmptyField(type = 'string', required = true) {
   return {
     id: generateId(),
     key: '',
     type,
     value: '',
     children: [],
+    required,
   };
 }
 
