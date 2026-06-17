@@ -4,7 +4,7 @@ import Button from '../ui/Button';
 import FieldList from './FieldList';
 import Preview from './Preview';
 import SchemaView from './SchemaView';
-import { buildJsonFromFields, createEmptyField } from '../../tools/creator';
+import { buildJsonFromFields } from '../../tools/creator';
 import { generateSchemaFromFields } from '../../tools/schema';
 
 export default function Creator() {
@@ -42,10 +42,6 @@ export default function Creator() {
     setFields([]);
   }, []);
 
-  const handleAddRoot = useCallback(() => {
-    setFields((prev) => [...prev, createEmptyField('string')]);
-  }, []);
-
   const toggleSchema = useCallback(() => {
     setShowSchema((v) => !v);
   }, []);
@@ -54,11 +50,6 @@ export default function Creator() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-lg)' }}>
       <Panel
         title="Editor de campos"
-        actions={
-          <Button variant="primary" size="sm" onClick={handleAddRoot}>
-            + Campo raíz
-          </Button>
-        }
         grid
       >
         <FieldList
