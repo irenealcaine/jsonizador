@@ -1,10 +1,4 @@
-import { type SelectHTMLAttributes } from 'react';
-
-interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  options: Array<{ value: string; label: string }>;
-}
-
-const style: React.CSSProperties = {
+const style = {
   padding: '4px 28px 4px 8px',
   fontSize: '0.75rem',
   fontFamily: 'var(--font-ui)',
@@ -20,7 +14,7 @@ const style: React.CSSProperties = {
   backgroundPosition: 'right 8px center',
 };
 
-export default function Select({ options, style: overrideStyle, ...props }: SelectProps) {
+export default function Select({ options, style: overrideStyle, ...props }) {
   return (
     <select style={{ ...style, ...overrideStyle }} {...props}>
       {options.map((opt) => (

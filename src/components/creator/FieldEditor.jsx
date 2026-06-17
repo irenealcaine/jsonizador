@@ -1,17 +1,4 @@
-import type { FieldNode, FieldType } from '../../types';
-import type { HTMLAttributes } from 'react';
-
-interface FieldEditorProps {
-  field: FieldNode;
-  onChange: (field: FieldNode) => void;
-  onDelete: () => void;
-  onDuplicate: () => void;
-  isArrayItem?: boolean;
-  dragHandleProps?: HTMLAttributes<HTMLElement>;
-  children?: React.ReactNode;
-}
-
-const fieldTypes: Array<{ value: FieldType; label: string }> = [
+const fieldTypes = [
   { value: 'string', label: 'string' },
   { value: 'number', label: 'number' },
   { value: 'boolean', label: 'boolean' },
@@ -20,7 +7,7 @@ const fieldTypes: Array<{ value: FieldType; label: string }> = [
   { value: 'array', label: 'array' },
 ];
 
-const rowStyle: React.CSSProperties = {
+const rowStyle = {
   display: 'flex',
   alignItems: 'center',
   gap: 6,
@@ -28,14 +15,13 @@ const rowStyle: React.CSSProperties = {
   flexWrap: 'wrap',
 };
 
-export default function FieldEditor({ field, onChange, onDelete, onDuplicate, isArrayItem, dragHandleProps, children }: FieldEditorProps) {
-  const handleKeyChange = (key: string) => {
+export default function FieldEditor({ field, onChange, onDelete, onDuplicate, isArrayItem, dragHandleProps, children }) {
+  const handleKeyChange = (key) => {
     onChange({ ...field, key });
   };
 
-  const handleTypeChange = (type: FieldType) => {
-    // Reset value when changing type
-    const newField: FieldNode = {
+  const handleTypeChange = (type) => {
+    const newField = {
       ...field,
       type,
       value: '',
@@ -44,7 +30,7 @@ export default function FieldEditor({ field, onChange, onDelete, onDuplicate, is
     onChange(newField);
   };
 
-  const handleValueChange = (value: string) => {
+  const handleValueChange = (value) => {
     onChange({ ...field, value });
   };
 
@@ -69,7 +55,6 @@ export default function FieldEditor({ field, onChange, onDelete, onDuplicate, is
           </span>
         )}
 
-        {/* Key input (hidden for array items) */}
         {!isArrayItem && (
           <input
             type="text"
@@ -93,10 +78,9 @@ export default function FieldEditor({ field, onChange, onDelete, onDuplicate, is
           <span style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>:</span>
         )}
 
-        {/* Type selector — always shows all 6 types including object/array */}
         <select
           value={field.type}
-          onChange={(e) => handleTypeChange(e.target.value as FieldType)}
+          onChange={(e) => handleTypeChange(e.target.value)}
           style={{
             padding: '3px 6px',
             fontSize: '0.7rem',
@@ -113,7 +97,6 @@ export default function FieldEditor({ field, onChange, onDelete, onDuplicate, is
           ))}
         </select>
 
-        {/* Value input for primitives */}
         {field.type === 'string' && (
           <input
             type="text"
@@ -189,7 +172,6 @@ export default function FieldEditor({ field, onChange, onDelete, onDuplicate, is
           </span>
         )}
 
-        {/* Actions */}
         <button
           onClick={onDuplicate}
           title="Duplicar campo"
@@ -223,7 +205,6 @@ export default function FieldEditor({ field, onChange, onDelete, onDuplicate, is
         </button>
       </div>
 
-      {/* Nested children for object/array */}
       {isComposite && children}
     </div>
   );

@@ -1,11 +1,7 @@
 import { useMemo } from 'react';
 import { tokenize } from '../../tools/viewer';
 
-interface PreviewProps {
-  json: string;
-}
-
-const tokenStyles: Record<string, React.CSSProperties> = {
+const tokenStyles = {
   key: { color: 'var(--color-blue)' },
   string: { color: 'var(--color-green)' },
   number: { color: 'var(--color-blue)' },
@@ -18,7 +14,7 @@ const tokenStyles: Record<string, React.CSSProperties> = {
   whitespace: {},
 };
 
-export default function Preview({ json }: PreviewProps) {
+export default function SyntaxHighlight({ json }) {
   const tokens = useMemo(() => tokenize(json), [json]);
 
   return (
@@ -31,16 +27,11 @@ export default function Preview({ json }: PreviewProps) {
       background: 'var(--color-bg)',
       border: '1px solid var(--color-border)',
       overflow: 'auto',
-      maxHeight: 400,
+      maxHeight: 500,
       whiteSpace: 'pre-wrap',
       wordBreak: 'break-all',
     }}>
       <code>
-        {tokens.length === 0 && (
-          <span style={{ color: 'var(--color-text-muted)', fontStyle: 'italic' }}>
-            {'{ }'}
-          </span>
-        )}
         {tokens.map((token, i) => (
           <span key={i} style={tokenStyles[token.type] || {}}>{token.value}</span>
         ))}

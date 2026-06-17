@@ -4,10 +4,9 @@ import Button from '../ui/Button';
 import FieldList from './FieldList';
 import Preview from './Preview';
 import { buildJsonFromFields, createEmptyField } from '../../tools/creator';
-import type { FieldNode } from '../../types';
 
 export default function Creator() {
-  const [fields, setFields] = useState<FieldNode[]>([]);
+  const [fields, setFields] = useState([]);
   const [copied, setCopied] = useState(false);
 
   const json = useMemo(() => {

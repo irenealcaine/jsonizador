@@ -1,14 +1,4 @@
-import type { ReactNode } from 'react';
-
-interface PanelProps {
-  title?: string;
-  children: ReactNode;
-  className?: string;
-  grid?: boolean;
-  actions?: ReactNode;
-}
-
-const cornerStyle: React.CSSProperties = {
+const cornerStyle = {
   position: 'absolute',
   fontFamily: 'var(--font-mono)',
   fontSize: 11,
@@ -18,7 +8,7 @@ const cornerStyle: React.CSSProperties = {
   pointerEvents: 'none',
 };
 
-export default function Panel({ title, children, className = '', grid = false, actions }: PanelProps) {
+export default function Panel({ title, children, className = '', grid = false, actions }) {
   return (
     <section className={`panel ${grid ? 'grid-bg' : ''} ${className}`}
       style={{ position: 'relative', background: 'var(--color-surface)', border: '1px solid var(--color-border)', padding: 'var(--spacing-lg)' }}

@@ -1,12 +1,10 @@
-import type { FieldNode, FieldType } from '../types';
-
 let counter = 0;
-export function generateId(): string {
+export function generateId() {
   counter++;
   return `field-${counter}-${crypto.randomUUID().slice(0, 8)}`;
 }
 
-export function createEmptyField(type: FieldType = 'string'): FieldNode {
+export function createEmptyField(type = 'string') {
   return {
     id: generateId(),
     key: '',
@@ -16,8 +14,8 @@ export function createEmptyField(type: FieldType = 'string'): FieldNode {
   };
 }
 
-export function buildJsonFromFields(fields: FieldNode[]): Record<string, unknown> {
-  const result: Record<string, unknown> = {};
+export function buildJsonFromFields(fields) {
+  const result = {};
   for (const field of fields) {
     if (!field.key && field.type !== 'array') continue;
     result[field.key || `item_${field.id.slice(-4)}`] = buildValue(field);
@@ -25,7 +23,7 @@ export function buildJsonFromFields(fields: FieldNode[]): Record<string, unknown
   return result;
 }
 
-function buildValue(field: FieldNode): unknown {
+function buildValue(field) {
   switch (field.type) {
     case 'string':
       return field.value;
@@ -36,7 +34,7 @@ function buildValue(field: FieldNode): unknown {
     case 'null':
       return null;
     case 'object': {
-      const obj: Record<string, unknown> = {};
+      const obj = {};
       for (const child of field.children) {
         const k = child.key || `key_${child.id.slice(-4)}`;
         obj[k] = buildValue(child);
@@ -49,7 +47,7 @@ function buildValue(field: FieldNode): unknown {
   }
 }
 
-export function duplicateField(field: FieldNode): FieldNode {
+export function duplicateField(field) {
   return {
     ...field,
     id: generateId(),

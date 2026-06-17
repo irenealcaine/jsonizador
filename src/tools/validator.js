@@ -1,17 +1,15 @@
-import type { JsonStats, JsonErrorInfo, FormatIndent } from '../types';
-
-export function formatJson(json: string, indent: FormatIndent): string {
+export function formatJson(json, indent) {
   const parsed = JSON.parse(json);
   const spaces = indent === 'tab' ? '\t' : indent;
   return JSON.stringify(parsed, null, spaces);
 }
 
-export function minifyJson(json: string): string {
+export function minifyJson(json) {
   const parsed = JSON.parse(json);
   return JSON.stringify(parsed);
 }
 
-export function parseJsonError(err: SyntaxError, json: string): JsonErrorInfo {
+export function parseJsonError(err, json) {
   const msg = err.message;
 
   let match = msg.match(/line\s+(\d+).*?column\s+(\d+)/i);
@@ -34,11 +32,11 @@ export function parseJsonError(err: SyntaxError, json: string): JsonErrorInfo {
   return { message: msg, line: null, column: null };
 }
 
-export function analyzeJson(data: unknown): JsonStats {
+export function analyzeJson(data) {
   let keyCount = 0;
   let maxDepth = 0;
 
-  function walk(value: unknown, depth: number): void {
+  function walk(value, depth) {
     maxDepth = Math.max(maxDepth, depth);
     if (typeof value === 'object' && value !== null) {
       if (Array.isArray(value)) {

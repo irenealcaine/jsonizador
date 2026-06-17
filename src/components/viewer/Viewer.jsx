@@ -5,18 +5,17 @@ import SyntaxHighlight from './SyntaxHighlight';
 import TreeViewNode from './TreeViewNode';
 import Button from '../ui/Button';
 import { buildTree } from '../../tools/viewer';
-import type { ViewMode } from '../../types';
 
 export default function Viewer() {
   const [jsonInput, setJsonInput] = useState('');
-  const [viewMode, setViewMode] = useState<ViewMode>('tree');
+  const [viewMode, setViewMode] = useState('tree');
   const [copied, setCopied] = useState(false);
 
   const parsed = useMemo(() => {
     try {
-      return { ok: true as const, data: JSON.parse(jsonInput) };
+      return { ok: true, data: JSON.parse(jsonInput) };
     } catch {
-      return { ok: false as const };
+      return { ok: false };
     }
   }, [jsonInput]);
 
@@ -43,7 +42,7 @@ export default function Viewer() {
         <JsonInput
           value={jsonInput}
           onChange={setJsonInput}
-          placeholder={'Pega tu JSON aquí…'}
+          placeholder={'Pega tu JSON aquí\u2026'}
           rows={8}
         />
       </Panel>

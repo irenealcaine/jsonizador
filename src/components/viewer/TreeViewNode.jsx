@@ -1,20 +1,13 @@
 import { useState } from 'react';
-import type { TreeNode } from '../../types';
 
-interface TreeViewNodeProps {
-  node: TreeNode;
-  depth: number;
-  isLast: boolean;
-}
-
-const typeColors: Record<string, string> = {
+const typeColors = {
   string: 'var(--color-green)',
   number: 'var(--color-blue)',
   boolean: 'var(--color-amber)',
   null: 'var(--color-text-muted)',
 };
 
-export default function TreeViewNode({ node, depth, isLast }: TreeViewNodeProps) {
+export default function TreeViewNode({ node, depth, isLast }) {
   const [expanded, setExpanded] = useState(depth < 2);
   const hasChildren = node.children.length > 0;
 
@@ -59,7 +52,7 @@ export default function TreeViewNode({ node, depth, isLast }: TreeViewNodeProps)
       );
     }
 
-    let valueDisplay: string;
+    let valueDisplay;
     switch (node.type) {
       case 'string':
         valueDisplay = `"${node.value}"`;
@@ -82,7 +75,6 @@ export default function TreeViewNode({ node, depth, isLast }: TreeViewNodeProps)
   return (
     <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 'var(--font-mono-weight)', fontSize: '0.8125rem', lineHeight: 1.8 }}>
       <div style={{ paddingLeft: indent, display: 'flex', alignItems: 'flex-start' }}>
-        {/* Collapse toggle */}
         <span
           onClick={toggle}
           style={{
@@ -98,7 +90,6 @@ export default function TreeViewNode({ node, depth, isLast }: TreeViewNodeProps)
           {hasChildren ? (expanded ? '▼' : '▶') : ' '}
         </span>
 
-        {/* Key */}
         {String(node.key) && (
           <span style={{ color: 'var(--color-blue)', marginRight: 6 }}>
             "{node.key}"
@@ -106,7 +97,6 @@ export default function TreeViewNode({ node, depth, isLast }: TreeViewNodeProps)
           </span>
         )}
 
-        {/* Value */}
         <div style={{ flex: 1 }}>{renderValue()}</div>
       </div>
     </div>

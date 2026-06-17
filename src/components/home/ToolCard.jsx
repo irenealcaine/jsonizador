@@ -1,14 +1,6 @@
 import { Link } from 'react-router-dom';
 
-interface ToolCardProps {
-  title: string;
-  description: string;
-  icon: string;
-  to: string;
-  color: string;
-}
-
-export default function ToolCard({ title, description, icon, to, color }: ToolCardProps) {
+export default function ToolCard({ title, description, icon, to, color }) {
   return (
     <Link to={to} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
       <article style={{
@@ -55,7 +47,6 @@ export default function ToolCard({ title, description, icon, to, color }: ToolCa
           {description}
         </p>
 
-        {/* Corner markers for the card */}
         <span style={{ position: 'absolute', top: -1, left: -1, fontFamily: 'var(--font-mono)', fontSize: 11, color, opacity: 0.4, lineHeight: 1 }}>┌</span>
         <span style={{ position: 'absolute', top: -1, right: -1, fontFamily: 'var(--font-mono)', fontSize: 11, color, opacity: 0.4, lineHeight: 1 }}>┐</span>
         <span style={{ position: 'absolute', bottom: -1, left: -1, fontFamily: 'var(--font-mono)', fontSize: 11, color, opacity: 0.4, lineHeight: 1 }}>└</span>

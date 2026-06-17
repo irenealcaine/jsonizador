@@ -12,7 +12,7 @@ export default function Validator() {
         <JsonInput
           value={jsonInput}
           onChange={setJsonInput}
-          placeholder={'Pega tu JSON aquí…\ne.g. {"nombre": "Juan", "edad": 30}'}
+          placeholder={'Pega tu JSON aquí\u2026\ne.g. {"nombre": "Juan", "edad": 30}'}
         />
       </Panel>
 

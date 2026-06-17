@@ -1,6 +1,4 @@
-import type { TreeNode, SyntaxToken } from '../types';
-
-export function buildTree(value: unknown, key: string | number = ''): TreeNode {
+export function buildTree(value, key = '') {
   if (value === null) {
     return { key, value: null, type: 'null', children: [] };
   }
@@ -25,18 +23,17 @@ export function buildTree(value: unknown, key: string | number = ''): TreeNode {
   return {
     key,
     value,
-    type: typeof value as 'string' | 'number' | 'boolean',
+    type: typeof value,
     children: [],
   };
 }
 
-export function tokenize(json: string): SyntaxToken[] {
-  const raw: Array<{ type: string; value: string }> = [];
+export function tokenize(json) {
+  const raw = [];
 
-  // Matches JSON tokens: strings, numbers, booleans, null, structural chars
   const re = /("(?:[^"\\]|\\.)*")|(-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?)|(\btrue\b)|(\bfalse\b)|(\bnull\b)|([\[\]{}])|(,)|(:)|(\s+)|(.+?)/g;
 
-  let m: RegExpExecArray | null;
+  let m;
   while ((m = re.exec(json)) !== null) {
     if (m[1] !== undefined) raw.push({ type: 'string', value: m[1] });
     else if (m[2] !== undefined) raw.push({ type: 'number', value: m[2] });
@@ -50,8 +47,7 @@ export function tokenize(json: string): SyntaxToken[] {
     else if (m[10] !== undefined) raw.push({ type: 'unknown', value: m[10] });
   }
 
-  // Determine which strings are keys (followed by colon, skipping whitespace)
-  const tokens: SyntaxToken[] = [];
+  const tokens = [];
   for (let i = 0; i < raw.length; i++) {
     if (raw[i].type === 'string') {
       let j = i + 1;
@@ -61,7 +57,7 @@ export function tokenize(json: string): SyntaxToken[] {
         continue;
       }
     }
-    tokens.push(raw[i] as SyntaxToken);
+    tokens.push(raw[i]);
   }
 
   return tokens;

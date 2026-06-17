@@ -1,11 +1,4 @@
-interface JsonInputProps {
-  value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
-  rows?: number;
-}
-
-export default function JsonInput({ value, onChange, placeholder, rows = 12 }: JsonInputProps) {
+export default function JsonInput({ value, onChange, placeholder, rows = 12 }) {
   return (
     <textarea
       value={value}

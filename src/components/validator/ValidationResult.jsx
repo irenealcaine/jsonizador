@@ -3,24 +3,12 @@ import { parseJsonError, analyzeJson } from '../../tools/validator';
 import Badge from '../ui/Badge';
 import Button from '../ui/Button';
 import Select from '../ui/Select';
-import type { JsonErrorInfo, JsonStats, FormatIndent } from '../../types';
 
-interface ValidationResultProps {
-  json: string;
-}
-
-type Mode = 'formatted' | 'minified' | null;
-
-type ValidationState =
-  | { status: 'idle' }
-  | { status: 'valid'; data: unknown; stats: JsonStats }
-  | { status: 'invalid'; error: JsonErrorInfo };
-
-export default function ValidationResult({ json }: ValidationResultProps) {
-  const [state, setState] = useState<ValidationState>({ status: 'idle' });
-  const [indent, setIndent] = useState<FormatIndent>(2);
+export default function ValidationResult({ json }) {
+  const [state, setState] = useState({ status: 'idle' });
+  const [indent, setIndent] = useState(2);
   const [copied, setCopied] = useState(false);
-  const [mode, setMode] = useState<Mode>(null);
+  const [mode, setMode] = useState(null);
   const [output, setOutput] = useState('');
 
   useEffect(() => {
@@ -37,7 +25,7 @@ export default function ValidationResult({ json }: ValidationResultProps) {
         const stats = analyzeJson(data);
         setState({ status: 'valid', data, stats });
       } catch (e) {
-        const error = parseJsonError(e as SyntaxError, json);
+        const error = parseJsonError(e, json);
         setState({ status: 'invalid', error });
         setMode(null);
         setOutput('');
@@ -65,7 +53,7 @@ export default function ValidationResult({ json }: ValidationResultProps) {
     }
   }, [indent, mode, state]);
 
-  const handleCopyResult = useCallback((text: string) => {
+  const handleCopyResult = useCallback((text) => {
     navigator.clipboard.writeText(text).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -78,7 +66,6 @@ export default function ValidationResult({ json }: ValidationResultProps) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-md)' }}>
-      {/* Status badge */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-sm)', flexWrap: 'wrap' }}>
         {state.status === 'valid' ? (
           <Badge variant="valid">✓ JSON válido</Badge>
@@ -87,7 +74,6 @@ export default function ValidationResult({ json }: ValidationResultProps) {
         )}
       </div>
 
-      {/* Error detail */}
       {state.status === 'invalid' && (
         <div style={{
           background: 'rgba(232, 148, 63, 0.10)',
@@ -106,7 +92,6 @@ export default function ValidationResult({ json }: ValidationResultProps) {
         </div>
       )}
 
-      {/* Stats + actions */}
       {state.status === 'valid' && (
         <div style={{ display: 'flex', gap: 'var(--spacing-md)', flexWrap: 'wrap', alignItems: 'flex-start' }}>
           <div style={{ display: 'flex', gap: 'var(--spacing-sm)', flexWrap: 'wrap' }}>
@@ -132,7 +117,7 @@ export default function ValidationResult({ json }: ValidationResultProps) {
             </Button>
             <Select
               value={String(indent)}
-              onChange={(e) => setIndent(e.target.value === 'tab' ? 'tab' : Number(e.target.value) as FormatIndent)}
+              onChange={(e) => setIndent(e.target.value === 'tab' ? 'tab' : Number(e.target.value))}
               options={[
                 { value: '2', label: '2 espacios' },
                 { value: '4', label: '4 espacios' },
@@ -151,7 +136,6 @@ export default function ValidationResult({ json }: ValidationResultProps) {
         </div>
       )}
 
-      {/* Output */}
       {output && (
         <pre style={{
           margin: 0,

@@ -6,7 +6,6 @@ import {
   KeyboardSensor,
   useSensor,
   useSensors,
-  type DragEndEvent,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -16,13 +15,6 @@ import {
 } from '@dnd-kit/sortable';
 import FieldEditor from './FieldEditor';
 import { createEmptyField, duplicateField } from '../../tools/creator';
-import type { FieldNode } from '../../types';
-
-interface FieldListProps {
-  fields: FieldNode[];
-  onChange: (fields: FieldNode[]) => void;
-  parentType?: 'object' | 'array';
-}
 
 function SortableItem({
   field,
@@ -32,14 +24,6 @@ function SortableItem({
   onDelete,
   onDuplicate,
   parentType,
-}: {
-  field: FieldNode;
-  index: number;
-  fields: FieldNode[];
-  onChange: (fields: FieldNode[]) => void;
-  onDelete: () => void;
-  onDuplicate: () => void;
-  parentType: 'object' | 'array';
 }) {
   const {
     attributes,
@@ -50,7 +34,7 @@ function SortableItem({
     isDragging,
   } = useSortable({ id: field.id, disabled: false });
 
-  const style: React.CSSProperties = transform ? {
+  const style = transform ? {
     transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
     transition: transition || undefined,
     zIndex: isDragging ? 10 : undefined,
@@ -60,7 +44,7 @@ function SortableItem({
     border: isDragging ? '1px solid var(--color-blue)' : undefined,
   } : {};
 
-  const handleFieldChange = (updated: FieldNode) => {
+  const handleFieldChange = (updated) => {
     const next = [...fields];
     next[index] = updated;
     onChange(next);
@@ -90,13 +74,13 @@ function SortableItem({
   );
 }
 
-export default function FieldList({ fields, onChange, parentType = 'object' }: FieldListProps) {
+export default function FieldList({ fields, onChange, parentType = 'object' }) {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
 
-  const handleDragEnd = useCallback((event: DragEndEvent) => {
+  const handleDragEnd = useCallback((event) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
 
@@ -114,11 +98,11 @@ export default function FieldList({ fields, onChange, parentType = 'object' }: F
     onChange([...fields, createEmptyField('string')]);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (id) => {
     onChange(fields.filter((f) => f.id !== id));
   };
 
-  const handleDuplicate = (field: FieldNode) => {
+  const handleDuplicate = (field) => {
     const idx = fields.findIndex((f) => f.id === field.id);
     const next = [...fields];
     next.splice(idx + 1, 0, duplicateField(field));

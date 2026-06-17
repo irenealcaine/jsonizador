@@ -1,12 +1,4 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
-
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
-  size?: 'sm' | 'md';
-  children: ReactNode;
-}
-
-const baseStyle: React.CSSProperties = {
+const baseStyle = {
   display: 'inline-flex',
   alignItems: 'center',
   gap: '6px',
@@ -18,7 +10,7 @@ const baseStyle: React.CSSProperties = {
   whiteSpace: 'nowrap',
 };
 
-const variants: Record<string, React.CSSProperties> = {
+const variants = {
   primary: {
     background: 'var(--color-blue)',
     color: '#fff',
@@ -41,12 +33,12 @@ const variants: Record<string, React.CSSProperties> = {
   },
 };
 
-const sizes: Record<string, React.CSSProperties> = {
+const sizes = {
   sm: { padding: '4px 10px', fontSize: '0.75rem' },
   md: { padding: '8px 16px', fontSize: '0.8125rem' },
 };
 
-export default function Button({ variant = 'secondary', size = 'md', children, style, ...props }: ButtonProps) {
+export default function Button({ variant = 'secondary', size = 'md', children, style, ...props }) {
   return (
     <button
       style={{

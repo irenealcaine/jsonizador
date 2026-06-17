@@ -18,7 +18,7 @@ const tools = [
   {
     title: 'Creador',
     description: 'Construye JSON desde cero campo por campo. Tipado visual, anidamiento ilimitado y reordenación por arrastre.',
-    icon: '+/–',
+    icon: '+/\u2013',
     to: '/creator',
     color: 'var(--color-amber)',
   },
